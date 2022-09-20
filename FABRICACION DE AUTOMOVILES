@@ -1,0 +1,49 @@
+#Una empresa dedicada a la fabricacion de automoviles tiene 
+#dos plantas armadoras. Una en guanajuato y otra en pachuca. 
+#La planta de guanajuato dispone de 7000 automoviles listos
+#para su distribuccion, mientras que la de pachuca cuenta 
+#con 4800. La empresa tiene tres centros de distribuccion se
+#encuentra en la toluca, otro en reynosa y el tercero en 
+#campache. Por la experiencia de años anteriores, se estima 
+#que la demanda por automoviles de cada uno de estos centros 
+#es de 5800, 3500 y 2500, respectivamente. Por otro lado, 
+#sabemos que los costos de envio por cada unidad entre las 
+#plantas armadoras y las agencias distribuidoras son:						
+
+# De/hacia	  Toluca	Reynosa	 Campeche
+# Guanajuato		50	    250		    400
+# Pachuca	      150	    230		    350
+
+#¿De qué manera puede minimizar el costo de transporte? 
+
+library(lpSolve)
+
+# matriz de flete
+costos<-matrix(c(50,150,250,230,400,350), nrow = 2) 
+costos
+
+#Símbolo de restricción de salida
+row.signs <-rep ("<=", 2) 
+row.signs
+
+# Vector de restricción de salida
+row.rhs <-c (7000,4800) 
+row.rhs
+
+#Símbolo de restricción de ventas
+col.signs <-rep ("=", 3) 
+col.signs
+
+# Vector de restricción de ventas
+col.rhs <-c (5800,3500,2500) 
+col.rhs
+
+# Ejecutamos la función y se guarda el resultado en res
+res<-lp.transport(costos,"min",row.signs,row.rhs,col.signs, col.rhs)
+
+# Se muestra el resultado de la función 
+# objetivo o el costo total mínimo
+res
+
+# Se muestra la tabla con los totales de envío
+res$solution
